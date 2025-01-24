@@ -1,32 +1,38 @@
 package com.example.musicapp.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.compose.material3.Text
 
 @Composable
 fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Klickbarer Text, um zum Profil zu navigieren
-        ClickableText(
-            text = AnnotatedString("Gehe zum Profil"),
-            modifier = Modifier.padding(8.dp),
-            onClick = {
-                // Navigation zum Profil-Bildschirm mit einem Parameter
-                navController.navigate("profile/Katy")
+        Text(
+            text = "Bohemian Rhapsody - Queen",
+            modifier = Modifier.clickable {
+                navController.navigate("play_screen/Bohemian Rhapsody/Queen/5:55")
+            }
+        )
+        Text(
+            text = "Stairway to Heaven - Led Zeppelin",
+            modifier = Modifier.clickable {
+                navController.navigate("play_screen/Stairway to Heaven/Led Zeppelin/8:02")
+            }
+        )
+        Text(
+            text = "Imagine - John Lennon",
+            modifier = Modifier.clickable {
+                navController.navigate("play_screen/Imagine/John Lennon/3:01")
             }
         )
     }
 }
-
-

@@ -4,11 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -18,29 +18,25 @@ import androidx.compose.ui.unit.sp
 import com.example.musicapp.R
 
 @Composable
-fun ProfileScreen(username: String, onBack: () -> Unit) {
+fun ProfileScreen(onNavigateToSongs: () -> Unit, onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Profilbild
+        // Abstand oben hinzufügen
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Rundes Profilbild
         Image(
-            painter = painterResource(id = R.drawable.profile_picture), // Passe dies an deine Ressource an
+            painter = painterResource(id = R.drawable.profile_picture), // Profilbild-Ressource
             contentDescription = "Profilbild",
             modifier = Modifier
-                .size(150.dp)
+                .size(150.dp) // Bildgröße
+                .clip(CircleShape) // Rund ausschneiden
                 .padding(8.dp),
-            contentScale = ContentScale.Crop
-        )
-
-        // Username
-        Text(
-            text = username,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(8.dp)
+            contentScale = ContentScale.Crop // Bild zuschneiden, um es anzupassen
         )
 
         // Statistiken
@@ -67,10 +63,9 @@ fun ProfileScreen(username: String, onBack: () -> Unit) {
         // "Follow"-Button
         Button(
             onClick = { /* Aktion hinzufügen */ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = "Follow", color = Color.White)
+            Text(text = "Follow")
         }
 
         // Lieblingsgenres
@@ -89,24 +84,28 @@ fun ProfileScreen(username: String, onBack: () -> Unit) {
             GenreChip("Hip-Hop")
         }
 
-        // Zurück-Button
+        // Navigation Buttons
+        Spacer(modifier = Modifier.weight(1f))
         Button(
-            onClick = onBack, // Rücknavigation ausführen
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-            modifier = Modifier.padding(top = 32.dp)
+            onClick = onNavigateToSongs, // Navigation zur Songliste
+            modifier = Modifier.padding(bottom = 8.dp)
         ) {
-            Text(text = "Zurück", color = Color.White)
+            Text(text = "Zu den Songs →")
+        }
+        Button(
+            onClick = onBack, // Rücknavigation zum Start
+            modifier = Modifier.padding(bottom = 8.dp)
+        ) {
+            Text(text = "Zurück zum Start")
         }
     }
 }
 
-// Einfache Genre-Chip-Komponente
 @Composable
 fun GenreChip(genre: String) {
     Box(
         modifier = Modifier
-            .padding(8.dp)
-            .wrapContentSize(),
+            .padding(horizontal = 8.dp, vertical = 4.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(

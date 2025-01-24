@@ -2,16 +2,12 @@ package com.example.musicapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.musicapp.data.Song
-import com.example.musicapp.screens.HomeScreen
-import com.example.musicapp.screens.PlayScreen
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import com.example.musicapp.screens.StartScreen
+import com.example.musicapp.screens.ProfileScreen
+import com.example.musicapp.screens.SongListScreen
 
 @Composable
 fun MainNavigation() {
@@ -19,21 +15,36 @@ fun MainNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "start"
     ) {
-        // Home-Screen
-        composable("home") { HomeScreen(navController) }
-
-        // Abspiel-Screen
-        composable(
-            route = "play_screen/{song}",
-            arguments = listOf(
-                navArgument("song") { type = NavType.StringType }
+        // Startbildschirm
+        composable("start") {
+            StartScreen(
+                onNavigateToProfile = {
+                    navController.navigate("profile")
+                }
             )
-        ) { backStackEntry ->
-            val songJson = backStackEntry.arguments?.getString("song")
-            val song = Json.decodeFromString<Song>(songJson!!)
-            PlayScreen(song = song, navController = navController)
+        }
+
+        // Profilansicht
+        composable("profile") {
+            ProfileScreen(
+                onNavigateToSongs = {
+                    navController.navigate("song_list")
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // Songliste
+        composable("song_list") {
+            SongListScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
